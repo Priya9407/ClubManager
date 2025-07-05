@@ -1,0 +1,160 @@
+
+{% extends "admin_base.html" %}
+{% block side %}
+<a href="{{url_for('dashboard')}}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-house"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block grey">Home</div>
+  </div>
+</a>
+<a href="{{url_for('new_club')}}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-plus-square"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block grey">Create Club</div>
+  </div>
+</a>
+<a href="{{url_for('view_clubs')}}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-folder-open"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block grey ">View Clubs</div>
+  </div>
+</a>
+<a href="{{ url_for('manage_members') }}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row active">
+    <div class="col-1"><i class="fa-solid icon fa-users-gear"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block light ">Members Hub</div>
+  </div>
+</a>
+<a href="{{ url_for('assign_roles') }}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-user-check"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block grey ">Assign Roles</div>
+  </div>
+</a>
+{% endblock %}
+
+
+
+
+
+{% block nav %}<a href="{{url_for('dashboard')}}">
+  <div class="ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-house"></i></div>
+    <div class="ps-4 col-9 grey">Home</div>
+  </div> 
+</a>
+<a href="{{url_for('new_club')}}">
+  <div class="ps-4 p-2 my-1 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-plus-square"></i></div>
+    <div class="ps-4 col-9 grey">Create Club</div>
+  </div>
+</a>
+<a href="{{url_for('view_clubs')}}">
+  <div class="ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-folder-open"></i></div>
+    <div class="ps-4 col-9 grey ">View Clubs</div>
+  </div>
+</a>
+<a href="{{ url_for('manage_members') }}">
+  <div class="ps-4 p-2 my-1 row active">
+    <div class="col-1"><i class="fa-solid icon fa-users-gear"></i></div>
+    <div class="ps-4 col-9 light ">Members Hub</div>
+  </div>
+</a>
+<a href="{{ url_for('assign_roles') }}">
+  <div class="ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-user-check"></i></div>
+    <div class="ps-4 col-9 grey ">Assign Roles</div>
+  </div>
+</a>{% endblock %}
+{% block mainblock %}
+
+<div class="white-bg container pb-5 page2">
+  <h3 class="pb-3 pt-5">Manage Members for <strong>{{ club.club_name }}</strong></h3>
+  <form method="GET" action="{{ url_for('manage_members_for_club', club_id='DYNAMIC') }}" onsubmit="this.action = '/club/' + document.getElementById('clubSelect').value + '/members';" class="form pt-3 pb-0">
+    <div class=" row align-items-center ps-5">
+      <label for="clubSelect" class="col-md-4 col-form-label fw-bold">Switch Club</label>
+      <div class="col-md-6">
+        <select class="form-select" id="clubSelect" name="club_id" required>
+          {% for c in clubs %}
+            <option value="{{ c.club_id }}" {% if c.club_id == club.club_id %}selected{% endif %}>
+              {{ c.club_name }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-warning w-100">Go</button>
+      </div>
+    </div>
+  </form>
+ 
+  <form method="POST" action="{{ url_for('add_member', club_id=club.club_id) }}" class="form pt-3 pb-5">
+    <div class=" row align-items-center ps-5">
+      <label for="clubSelect" class="col-md-4 col-form-label fw-bold">Add members</label>
+      <div class="col-md-6">
+        <select name="student_id" class="form-select" required>
+          <option value="" disabled selected>Select Student to Add</option>
+          {% for s in non_members %}
+          <option value="{{ s.student_id }}">{{ s.name }} ({{ s.student_id }})</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class=" col-md-2">
+        <button type="submit" class="btn btn-success w-100">Add</button>
+      </div>
+    </div>
+  </form>
+  <!-- Member List -->
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Student ID</th>
+        <th>Name</th>
+        <th class="d-none d-md-table-cell">Department</th>
+        <th class="d-none d-md-table-cell">Year</th>
+        
+        <th >Action</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in members %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ m.student.student_id }}</td>
+        <td>
+          {{ m.student.name }}
+          <button class="btn pt-2 btn-sm btn-outline-primary d-md-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ loop.index }}">
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+        </td>
+    
+        <!-- Hide these columns on small screens -->
+        <td class="d-none d-md-table-cell">{{ m.student.department }}</td>
+        <td class="d-none d-md-table-cell">{{ m.student.year }}</td>
+        
+        <td class="d-md-table-cell">
+          <form action="{{ url_for('remove_member', club_id=club.club_id, student_id=m.student.student_id) }}" method="POST" onsubmit="return confirm('Remove this member?');" style="width:7rem">
+            <button class="btn btn-danger btn-sm">Remove</button>
+          </form>
+        </td>
+      </tr>
+    
+      <!-- Collapsible details row (only shown on small screens) -->
+      <tr class="collapse d-md-none" id="collapse{{ loop.index }}">
+        <td colspan="6">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Department:</strong> {{ m.student.department }}</li>
+            <li class="list-group-item"><strong>Year:</strong> {{ m.student.year }}</li>
+            
+          </ul>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    
+  </table>
+</div>
+{% endblock %}

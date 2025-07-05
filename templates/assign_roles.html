@@ -1,0 +1,126 @@
+
+
+{% extends "admin_base.html" %} 
+
+{% block side %}
+<a href="{{url_for('dashboard')}}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-house"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block grey">Home</div>
+  </div>
+</a>
+<a href="{{url_for('new_club')}}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-plus-square"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block grey">Create Club</div>
+  </div>
+</a>
+<a href="{{url_for('view_clubs')}}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-folder-open"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block grey ">View Clubs</div>
+  </div>
+</a>
+<a href="{{ url_for('manage_members') }}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-users-gear"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block grey ">Members Hub</div>
+  </div>
+</a>
+<a href="{{ url_for('assign_roles') }}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row active">
+    <div class="col-1"><i class="fa-solid icon fa-user-check"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block light ">Assign Roles</div>
+  </div>
+</a>
+{% endblock %}
+
+
+
+
+
+{% block nav %}<a href="{{url_for('dashboard')}}">
+  <div class="ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-house"></i></div>
+    <div class="ps-4 col-9 grey">Home</div>
+  </div> 
+</a>
+<a href="{{url_for('new_club')}}">
+  <div class="ps-4 p-2 my-1 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-plus-square"></i></div>
+    <div class="ps-4 col-9 grey">Create Club</div>
+  </div>
+</a>
+<a href="{{url_for('view_clubs')}}">
+  <div class="ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-folder-open"></i></div>
+    <div class="ps-4 col-9 grey ">View Clubs</div>
+  </div>
+</a>
+<a href="{{ url_for('manage_members') }}">
+  <div class="ps-4 p-2 my-1 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-users-gear"></i></div>
+    <div class="ps-4 col-9 grey ">Members Hub</div>
+  </div>
+</a>
+<a href="{{ url_for('assign_roles') }}">
+  <div class="ps-4 p-2 row active">
+    <div class="col-1"><i class="fa-solid icon fa-user-check"></i></div>
+    <div class="ps-4 col-9 light ">Assign Roles</div>
+  </div>
+</a>{% endblock %}
+
+{% block mainblock %}
+<div class="page container white-bg pb-5"><h3 class="pb-3 pt-5">Assign Roles for {{ club.club_name }}</h3>
+
+  <form method="GET"
+        action="{{ url_for('assign_roles_for_club', club_id='DYNAMIC') }}"
+        onsubmit="this.action = '/assign_roles/' + document.getElementById('clubSelect').value;"
+        class="form pt-3 pb-0">
+    <div class="row align-items-center ps-5">
+      <label for="clubSelect" class="col-md-4 col-form-label fw-bold">Switch Club</label>
+      <div class="col-md-6">
+        <select class="form-select" id="clubSelect" name="club_id" required>
+          {% for c in clubs %}
+            <option value="{{ c.club_id }}" {% if c.club_id == club.club_id %}selected{% endif %}>
+              {{ c.club_name }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-success w-100">Go</button>
+      </div>
+    </div>
+  </form>
+  
+  <form method="POST" class="form pt-3">
+    <div class="d-flex flex-column justify-content-center">
+    <div class="m-3 ps-5" style="text-align: left;">
+      <label class="pb-3">President</label>
+      <select name="president_id" class="form-select">
+        <option value="">-- None --</option>
+        {% for s in available_students %}
+          <option value="{{ s.student_id }}" {% if club.president_id == s.student_id %}selected{% endif %}>
+            {{ s.name }} ({{ s.student_id }})
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+  
+    <div class="m-3 ps-5" style="text-align: left;">
+      <label class="pb-3">Faculty Coordinator</label>
+      <select name="faculty_id" class="form-select">
+        <option value="">-- None --</option>
+        {% for f in available_faculty %}
+          <option value="{{ f.faculty_id }}" {% if club.faculty_coordinator_id == f.faculty_id %}selected{% endif %}>
+            {{ f.name }} ({{ f.faculty_id }})
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+  <div class="p-3 ms-4 pt-sm-4 mt-lg-4 ps-5">
+    <button class="btn btn-warning" style="width:10rem">Save Changes</button></div></div>
+  </form>
+  </div>
+{% endblock %}

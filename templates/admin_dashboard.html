@@ -1,0 +1,128 @@
+{% extends "admin_base.html" %} 
+
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block title2 %}Dashboard{% endblock %}
+
+{% block side %}
+<a href="{{url_for('dashboard')}}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row active">
+    <div class="col-1"><i class="fa-solid icon fa-house"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block light">Home</div>
+  </div>
+</a>
+<a href="{{url_for('new_club')}}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-plus-square"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block grey">Create Club</div>
+  </div>
+</a>
+<a href="{{url_for('view_clubs')}}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-folder-open"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block grey ">View Clubs</div>
+  </div>
+</a>
+<a href="{{ url_for('manage_members') }}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-users-gear"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block grey ">Members Hub</div>
+  </div>
+</a>
+<a href="{{ url_for('assign_roles') }}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-user-check"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block grey ">Assign Roles</div>
+  </div>
+</a>
+{% endblock %}
+
+
+
+
+
+{% block nav %}<a href="{{url_for('dashboard')}}">
+  <div class="ps-4 p-2 row active">
+    <div class="col-1"><i class="fa-solid icon fa-house"></i></div>
+    <div class="ps-4 col-9 light">Home</div>
+  </div> 
+</a>
+<a href="{{url_for('new_club')}}">
+  <div class="ps-4 p-2 my-1 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-plus-square"></i></div>
+    <div class="ps-4 col-9 grey">Create Club</div>
+  </div>
+</a>
+<a href="{{url_for('view_clubs')}}">
+  <div class="ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-folder-open"></i></div>
+    <div class="ps-4 col-9 grey ">View Clubs</div>
+  </div>
+</a>
+<a href="{{ url_for('manage_members') }}">
+  <div class="ps-4 p-2 my-1 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-users-gear"></i></div>
+    <div class="ps-4 col-9 grey ">Members Hub</div>
+  </div>
+</a>
+<a href="{{ url_for('assign_roles') }}">
+  <div class="ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-user-check"></i></div>
+    <div class="ps-4 col-9 grey ">Assign Roles</div>
+  </div>
+</a>{% endblock %}
+
+{% block search %}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center">
+ 
+  <div class="order-2 order-md-1 mx-0">
+<form action="{{url_for('search_club')}}" method="POST" >
+  <div class="input-group mb-3" style="width:53vw;min-width:425px" >
+    <button class="btn btn-primary" value="Search" type="submit"><i class="fa fa-search" ></i></button>
+    <input type="text" class="form-control" placeholder="Search..." name="search">
+  </div>
+  </form></div><div class="me-3 order-1 order-sm-2"><form action="{{url_for('new_club')}}" method="GET"  style="width:9.5rem">
+    <div class="mb-3">
+      <button style="width:10rem" class="btn mx-2 btn-warning display-block" value="Create" type="submit"><i class="fa fa-plus"></i> Create New</button>
+      
+    </div>
+    </form>
+</div>
+</div>
+{% endblock %}
+
+
+{% block mainblock %}
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col" class="d-none d-md-table-cell d-xl-table-cell">Club Id</th>
+      <th scope="col">Name</th>
+      <th scope="col" class="d-none d-lg-table-cell d-xl-table-cell">Description</th>
+      <th scope="col" class="d-none d-xl-table-cell">Category</th>
+      <th scope="col">President</th>
+      <th scope="col">Faculty</th>
+      <th scope="col">View</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for club in clubs %}
+    <tr>
+      <td class="d-none d-md-table-cell d-xl-table-cell">{{ club.club_id }}</td>
+      <td>{{ club.club_name }}</td>
+      <td class="d-none d-lg-table-cell d-xl-table-cell">{{ club.description }}</td>
+      <td class="d-none d-xl-table-cell">{{ club.category }}</td>
+      <td>{{ club.president.name if club.president else 'N/A' }}</td>
+      <td>{{ club.faculty_coordinator.name if club.faculty_coordinator else 'N/A' }}</td>
+      <td><a href="{{url_for('view_club',club_id=club.club_id)}}" class="btn btn-warning">View</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% if search_term %}
+<p>Showing results for "<strong>{{ search_term }}</strong>"</p>
+<a href="{{ url_for('dashboard') }}" class="btn btn-primary" style="width:10rem">Clear Search</a>
+{% endif %}
+{% endblock %}

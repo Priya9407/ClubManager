@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/open.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="d-flex flex-column justify-content-center align-items-center container-fluid1">
+  <div class="p-4 pt-0 bg3 row">
+    <div class="col align-self-center text-center">
+      <nav aria-label="login and register">
+        <ul class="p-4 pagination">
+          
+          <li class="col page-item p-2 active">
+            <a class="text-center active-btn light" href="{{ url_for('register') }}">Register</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="p-5 pt-0 pb-0">
+      <form action="{{ url_for('register') }}" method="POST">
+        <div class="mb-3 row">
+          <label for="id" class="col-sm-5 dark col-form-label">User ID</label>
+          <div class="col-sm-7">
+            <input type="text" class="form-control" id="id" name="id" required>
+          </div>
+        </div>
+
+        <div class="mb-3 row">
+          <label for="email" class="col-sm-5 dark col-form-label">Email</label>
+          <div class="col-sm-7">
+            <input type="email" class="form-control" id="email" name="email" required>
+          </div>
+        </div>
+
+        <div class="mb-3 row">
+          <label for="password" class="col-sm-5 dark col-form-label">Password</label>
+          <div class="col-sm-7">
+            <input type="password" class="form-control" id="password" name="password" required>
+          </div>
+        </div>
+        <div class="mb-3 row dark">
+          <label for="role" class="col-sm-4 col-form-label dark">Role</label>
+          <div class="col-sm-8">
+            <select class="form-select" id="role" name="role" required>
+              <option value="" disabled selected>Select Role</option>
+              <option value="student " class="dark">Student</option>
+              <option value="faculty" class="dark">Faculty</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="pt-4 pb-3 d-flex justify-content-center">
+          <button class="submit btn-secondary btn align-self-center btn-second" type="submit">Register</button>
+        </div>
+
+       
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

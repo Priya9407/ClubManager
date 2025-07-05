@@ -1,0 +1,123 @@
+{% extends "admin_base.html" %} 
+
+{% block side %}
+<a href="{{url_for('dashboard')}}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-house"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block grey">Home</div>
+  </div>
+</a>
+<a href="{{url_for('new_club')}}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-plus-square"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block grey">Create Club</div>
+  </div>
+</a>
+<a href="{{url_for('view_clubs')}}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row active">
+    <div class="col-1"><i class="fa-solid icon fa-folder-open"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block light ">View Clubs</div>
+  </div>
+</a>
+<a href="{{ url_for('manage_members') }}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-users-gear"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block grey ">Members Hub</div>
+  </div>
+</a>
+<a href="{{ url_for('assign_roles') }}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-user-check"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block grey ">Assign Roles</div>
+  </div>
+</a>
+{% endblock %}
+
+
+
+
+
+{% block nav %}<a href="{{url_for('dashboard')}}">
+  <div class="ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-house"></i></div>
+    <div class="ps-4 col-9 grey">Home</div>
+  </div> 
+</a>
+<a href="{{url_for('new_club')}}">
+  <div class="ps-4 p-2 my-1 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-plus-square"></i></div>
+    <div class="ps-4 col-9 grey">Create Club</div>
+  </div>
+</a>
+<a href="{{url_for('view_clubs')}}">
+  <div class="ps-4 p-2 row active">
+    <div class="col-1"><i class="fa-solid icon fa-folder-open"></i></div>
+    <div class="ps-4 col-9 light ">View Clubs</div>
+  </div>
+</a>
+<a href="{{ url_for('manage_members') }}">
+  <div class="ps-4 p-2 my-1 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-users-gear"></i></div>
+    <div class="ps-4 col-9 grey ">Members Hub</div>
+  </div>
+</a>
+<a href="{{ url_for('assign_roles') }}">
+  <div class="ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-user-check"></i></div>
+    <div class="ps-4 col-9 grey ">Assign Roles</div>
+  </div>
+</a>{% endblock %}
+{% block search %}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center">
+ 
+  <div class="order-2 order-md-1 mx-0">
+<form action="{{url_for('view_search_club')}}" method="POST" >
+  <div class="input-group mb-3" style="width:53vw;min-width:425px" >
+    <button class="btn btn-primary" value="Search" type="submit"><i class="fa fa-search" ></i></button>
+    <input type="text" class="form-control" placeholder="Search..." name="search">
+  </div>
+  </form></div><div class="me-3 order-1 order-md-2"><form action="{{url_for('new_club')}}" method="GET"  style="width:9.5rem">
+    <div class="mb-3">
+      <button style="width:9rem" class="btn btn-warning display-block" value="Create" type="submit"><i class="fa fa-plus"></i> Create New</button>
+      
+    </div>
+    </form>
+</div>
+</div>
+{% endblock %}
+
+
+
+
+{% block mainblock %}
+<div class="row ">
+ <div class="col row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4">
+
+{% for club in clubs %}
+<div class="col p-1">
+<div class="card">
+ 
+ <div class="card-body">
+   <a href="{{url_for('view_club',club_id=club.club_id)}}" class="dark">
+  <h5 class="card-title">{{club.club_name}}</h5><p class="card-text">{{club.description}}<br>{{club.club_id}}</p></a>
+ </div>
+ <ul class="list-group list-group-flush">
+   <li class="list-group-item"><div class="row"><div class="col-6">President</div>
+     <div class="col-6">{{club.president.name if club.president else 'N/A'}}</div></div></li>
+   <li class="list-group-item"><div class="row"><div class="col-6">Faculty</div>
+     <div class="col-6">{{club.faculty_coordinator.name if club.faculty_coordinator else 'N/A'}}</div></div></li>
+   <li class="list-group-item"><div class="row"><div class="col-6">Members</div>
+   <div class="col-6">10</div></div></li>
+ </ul>
+ <div class="card-body">
+   <a href="{{url_for('edit_club',club_id=club.club_id)}}" class=" btn btn-warning">Edit</a>
+   <a href="{{ url_for('delete_club', club_id=club.club_id) }}" class="btn-danger btn">Delete</a>
+</div></div></div>
+{% endfor %}
+
+ {% if search_term %}
+<p>Showing results for "<strong>{{ search_term }}</strong>"</p>
+<a href="{{ url_for('dashboard') }}" class="btn btn-primary" style="width:10rem">Clear Search</a>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+:root{
+  --dark-main:#1E2B48;
+  --bg:#ECF0F1;
+  --light-main:	#ffffff;
+  --border-radius:0.3rem;
+  --orange:#f39c12;
+}
+*{
+  color:var(--light-main);
+  font-weight: "Roboto",sans-serif;
+}
+.container-fluid,.container-fluid1{
+  height:100vh;
+  background: var(--dark-main);
+}
+.bg{
+  background: #fafafa;
+  height:70vh;
+  width:75vw;
+  min-height: 410px;
+}
+.form-control:focus {
+  outline: none;
+  box-shadow: 0 0 2px 3px #5671af;
+  border-color: #5671af;
+}
+.bg2{
+  background: #fafafa;
+  height:70vh;
+  width:75vw;
+  min-height: 410px;
+  max-width: 580px;
+}
+.bg3{
+  background: #fafafa;
+  height:82vh;
+  width:75vw;
+  min-height: 410px;
+  max-width: 580px;
+}
+.title{ 
+  width:75vw;
+  font-size: 2rem;
+  font-family: "Poppins",sans-serif;
+}
+.footer{
+  width:75vw;
+}
+.main{
+  color: var(--dark-main);
+}
+img{
+  width:35vw;
+  height:35vw;
+  max-width: 440px;
+  max-height: 440px;
+}
+.main-h{
+  font-size: max(5vh,30px);
+  line-height: 2.7rem;
+  font-family: "Poppins",sans-serif;
+  font-weight: 500;
+}
+.btn{
+  display: block;
+  max-width: 10rem;
+  background-color: #f39c12;
+  color: #fafafa;
+  border: none;
+  margin: 1rem;
+}
+.btn:hover{
+  background: #f4a82d;
+}
+.btn-second:active{
+  background: #1E2B48;
+}
+.btn-primary{
+  background-color: var(--dark-main);
+}
+.btn-primary:hover{
+  background: #334671;
+}
+.login{
+  background:var(--bg);
+  color: var(--dark-main);
+}
+.dark{
+  color: var(--dark-main);
+}
+.light{
+  color:var(--bg);
+}
+.container{
+  background: var(--light-main);
+  width: 80vw;
+}
+.active{
+  background: var(--dark-main);
+  border-radius: 5px;
+}
+.active:hover{
+  background-color: #374567;
+  color: var(--light-main);
+}
+.active:active{
+  box-shadow: 0 1px 8px var(--dark-main);
+}
+.unactive-btn:hover{
+  background: var(--bg);
+  color: #334671;
+}
+.unactive-btn:active{
+  box-shadow: 0 1px 8px var(--dark-main);
+}
+a{
+  text-decoration: none;
+}
+.submit{
+  margin: 0;
+  width:8rem;
+}
+.pagination{
+  border-radius: 5px;
+}
+
+@media (max-width: 576px) { 
+  .container-fluid1{
+    height:140vh;
+  }
+  .bg3{
+  width:75vw;
+  min-height: 120vh;
+  max-width: 580px;
+}}

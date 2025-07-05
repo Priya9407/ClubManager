@@ -1,0 +1,163 @@
+{% extends "admin_base.html" %}
+
+
+{% block side %}
+<a href="{{url_for('dashboard')}}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-house"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block grey">Home</div>
+  </div>
+</a>
+<a href="{{url_for('new_club')}}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-plus-square"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block grey">Create Club</div>
+  </div>
+</a>
+<a href="{{url_for('view_clubs')}}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row active">
+    <div class="col-1"><i class="fa-solid icon fa-folder-open"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block light ">View Clubs</div>
+  </div>
+</a>
+<a href="{{ url_for('manage_members') }}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-users-gear"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block grey ">Members Hub</div>
+  </div>
+</a>
+<a href="{{ url_for('assign_roles') }}">
+  <div class="ps-sm-3 my-1 ps-lg-4 ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-user-check"></i></div>
+    <div class="ps-4 col-9 d-sm-none d-lg-block grey ">Assign Roles</div>
+  </div>
+</a>
+{% endblock %}
+
+
+
+
+
+{% block nav %}<a href="{{url_for('dashboard')}}">
+  <div class="ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-house"></i></div>
+    <div class="ps-4 col-9 grey">Home</div>
+  </div> 
+</a>
+<a href="{{url_for('new_club')}}">
+  <div class="ps-4 p-2 my-1 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-plus-square"></i></div>
+    <div class="ps-4 col-9 grey">Create Club</div>
+  </div>
+</a>
+<a href="{{url_for('view_clubs')}}">
+  <div class="ps-4 p-2 row active">
+    <div class="col-1"><i class="fa-solid icon fa-folder-open"></i></div>
+    <div class="ps-4 col-9 light">View Clubs</div>
+  </div>
+</a>
+<a href="{{ url_for('manage_members') }}">
+  <div class="ps-4 p-2 my-1 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-users-gear"></i></div>
+    <div class="ps-4 col-9 grey">Members Hub</div>
+  </div>
+</a>
+<a href="{{ url_for('assign_roles') }}">
+  <div class="ps-4 p-2 row inactive">
+    <div class="col-1"><i class="fa-solid icon fa-user-check"></i></div>
+    <div class="ps-4 col-9 grey ">Assign Roles</div>
+  </div>
+</a>{% endblock %}
+
+{% block mainblock %}
+<div class="d-flex justify-content-center align-items-center">
+  <div class="p-5 mt-1 gap white-bg mb-5">
+    <form action="{{ url_for('edit_club', club_id=club.club_id) }}" method="POST">
+
+      <h3 class="pb-4">Edit Club</h3>
+
+      <div class="mb-3 row">
+        <label for="club_id" class="col-sm-4 col-form-label">Club ID</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" id="club_id" value="{{ club.club_id }}" name="club_id" disabled>
+        </div>
+      </div>
+
+      <div class="mb-3 row">
+        <label for="club_name" class="col-sm-4 col-form-label">Club Name</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" id="club_name" name="club_name" value="{{ club.club_name }}" required>
+        </div>
+      </div>
+
+      <div class="mb-3 row">
+        <label for="description" class="col-sm-4 col-form-label">Description</label>
+        <div class="col-sm-8">
+          <textarea class="form-control" id="description" name="description" required>{{ club.description }}</textarea>
+        </div>
+      </div>
+
+      <div class="mb-3 row">
+        <label for="category" class="col-sm-4 col-form-label">Category</label>
+        <div class="col-sm-8">
+          <select class="form-select" id="category" name="category" required>
+            <option value="" disabled>Select a category</option>
+            {% for cat in ["Technical", "Social", "Cultural", "Literary", "Special"] %}
+              <option value="{{ cat }}" {% if club.category == cat %}selected{% endif %}>{{ cat }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="mb-3 row">
+        <label for="president" class="col-sm-4 col-form-label">President</label>
+        <div class="col-sm-8">
+          <select class="form-select" id="president" name="president">
+            <option value="">None</option> 
+            {% for student in non_president_students %}
+              <option value="{{ student.student_id }}" {% if club.president_id == student.student_id %}selected{% endif %}>
+                {{ student.name }} ({{ student.student_id }})
+              </option>
+            {% endfor %}
+            
+            {% if club.president and club.president not in non_president_students %}
+              <option value="{{ club.president.student_id }}" selected>
+                {{ club.president.name }} ({{ club.president.student_id }})
+              </option>
+            {% endif %}
+          </select>
+        </div>
+      </div>
+
+      <div class="mb-3 row">
+        <label for="faculty" class="col-sm-4 col-form-label">Faculty Coordinator</label>
+        <div class="col-sm-8">
+          <select class="form-select" id="faculty" name="faculty" >
+            <option value="">None</option>  
+            {% for faculty in non_coordinator_faculties %}
+              <option value="{{ faculty.faculty_id }}" {% if club.faculty_coordinator_id == faculty.faculty_id %}selected{% endif %}>
+                {{ faculty.name }} ({{ faculty.faculty_id }})
+              </option>
+            {% endfor %}
+            {% if club.faculty_coordinator and club.faculty_coordinator not in non_coordinator_faculties %}
+              <option value="{{ club.faculty_coordinator.faculty_id }}" selected>
+                {{ club.faculty_coordinator.name }} ({{ club.faculty_coordinator.faculty_id }})
+              </option>
+            {% endif %}
+          </select>
+        </div>
+      </div>
+
+      <div class="d-flex p-4 justify-content-center">
+        <div class="mx-2">
+          <button type="submit" class="btn btn-warning">Update</button>
+        </div>
+        <div class="mx-2">
+          <a class="btn btn-primary" href="{{ url_for('view_club',club_id=club.club_id) }}" role="button">Back</a>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+{% endblock %}
